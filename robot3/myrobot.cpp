@@ -5,11 +5,11 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
     DataToSend[0] = 0xFF;
     DataToSend[1] = 0x07;
-    DataToSend[2] = 0x0;
-    DataToSend[3] = 0x0;
-    DataToSend[4] = 0x0;
-    DataToSend[5] = 0x0;
-    DataToSend[6] = 0x0;
+    DataToSend[2] = 0x0;    //Vitesse roue gauche
+    DataToSend[3] = 0x0;    //Vitesse roue gauche
+    DataToSend[4] = 0x0;    //Vitesse roue droite
+    DataToSend[5] = 0x0;    //Vitesse roue droite
+    DataToSend[6] = 0x0;    //Direction 80 droit,  64 droite, 16 gauche, 0 reculer
     DataToSend[7] = 0x0;
     DataToSend[8] = 0x0;
     DataReceived.resize(21);
@@ -27,7 +27,7 @@ void MyRobot::doConnect() {
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     qDebug() << "connecting..."; // this is not blocking call
     //socket->connectToHost("LOCALHOST", 15020);
-    socket->connectToHost("192.168.1.106", 15020); // connection to wifibot
+    socket->connectToHost("192.168.10.1", 5004); // connection to wifibot
     // we need to wait...
     if(!socket->waitForConnected(5000)) {
         qDebug() << "Error: " << socket->errorString();
@@ -58,7 +58,7 @@ void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
     DataReceived = socket->readAll();
     emit updateUI(DataReceived);
-    qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
+    qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2]; // Rajouter les autres ?
 }
 
 void MyRobot::MyTimerSlot() {
