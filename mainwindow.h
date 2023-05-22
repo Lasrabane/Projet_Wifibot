@@ -20,6 +20,8 @@ private:
     Ui::MainWindow *ui;
     MyRobot ro;
     void Camera();
+    //onKeyPressEvent();
+    void stop();
 
 private slots:
     //Modifier les noms
@@ -29,5 +31,9 @@ private slots:
     void on_reculerButton_pressed();
     void on_gaucheButton_pressed();
     void on_droiteButton_pressed();
+    void on_avancerButton_released();
+    void on_droiteButton_released();
+    void on_gaucheButton_released();
+    void on_reculerButton_released();
 };
 #endif // MAINWINDOW_H
