@@ -31,7 +31,8 @@ unsigned  short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max);
 
 void MainWindow::on_avancerButton_pressed()
 {
-       qDebug() << "g..."; // read the data from the socket
+    // read the data from the socket
+    qDebug() << "avance____";
     ro.DataToSend[0] = 0xFF;
     ro.DataToSend[1] = 0x07;
     ro.DataToSend[2] = 150;    //Vitesse roue gauche
@@ -71,45 +72,55 @@ unsigned short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max)
 }
 
 
-
-
 void MainWindow::on_gaucheButton_pressed()
 {
-    ro.DataToSend[6] = 16;    //Direction 80 droit,  64 droite, 16 gauche, 0 reculer
-
-    short crc = Crc16((unsigned char*)(ro.DataToSend.data())+1, 6);
-    char crc1 = crc;
-    char crc2 = crc >> 8;
-
-    ro.DataToSend[7] = crc1;
-    ro.DataToSend[8] = crc2;
+    qDebug() << "gauche____";
+    // read the data from the socket
+    ro.DataToSend[0] = 0xFF;
+    ro.DataToSend[1] = 0x07;
+    ro.DataToSend[2] = 150;    //Vitesse roue gauche
+    ro.DataToSend[3] = 0;    //Vitesse roue gauche
+    ro.DataToSend[4] = 150;    //Vitesse roue droite
+    ro.DataToSend[5] = 0;    //Vitesse roue droite
+    ro.DataToSend[6] = 16;
+    unsigned short crc = Crc16((unsigned char*)(ro.DataToSend.constData()), 7);
+    ro.DataToSend[7] = (unsigned char)crc;
+    ro.DataToSend[8] = (unsigned char)(crc >> 8);
 
 }
 
 
 void MainWindow::on_reculerButton_pressed()
 {
+    qDebug() << "recule____";
+    // read the data from the socket
+    ro.DataToSend[0] = 0xFF;
+    ro.DataToSend[1] = 0x07;
+    ro.DataToSend[2] = 150;    //Vitesse roue gauche
+    ro.DataToSend[3] = 0;    //Vitesse roue gauche
+    ro.DataToSend[4] = 150;    //Vitesse roue droite
+    ro.DataToSend[5] = 0;    //Vitesse roue droite
     ro.DataToSend[6] = 0;    //Direction 80 droit,  64 droite, 16 gauche, 0 reculer
-
-    short crc = Crc16((unsigned char*)(ro.DataToSend.data())+1, 6);
-    char crc1 = crc;
-    char crc2 = crc >> 8;
-
-    ro.DataToSend[7] = crc1;
-    ro.DataToSend[8] = crc2;
+    unsigned short crc = Crc16((unsigned char*)(ro.DataToSend.constData()), 7);
+    ro.DataToSend[7] = (unsigned char)crc;
+    ro.DataToSend[8] = (unsigned char)(crc >> 8);
 }
-
 
 void MainWindow::on_droiteButton_pressed()
 {
+    qDebug() << "droite____";
+
+    // read the data from the socket
+    ro.DataToSend[0] = 0xFF;
+    ro.DataToSend[1] = 0x07;
+    ro.DataToSend[2] = 150;    //Vitesse roue gauche
+    ro.DataToSend[3] = 0;    //Vitesse roue gauche
+    ro.DataToSend[4] = 150;    //Vitesse roue droite
+    ro.DataToSend[5] = 0;    //Vitesse roue droite
     ro.DataToSend[6] = 64;    //Direction 80 droit,  64 droite, 16 gauche, 0 reculer
-
-    short crc = Crc16((unsigned char*)(ro.DataToSend.data())+1, 6);
-    char crc1 = crc;
-    char crc2 = crc >> 8;
-
-    ro.DataToSend[7] = crc1;
-    ro.DataToSend[8] = crc2;
+    unsigned short crc = Crc16((unsigned char*)(ro.DataToSend.constData()), 7);
+    ro.DataToSend[7] = (unsigned char)crc;
+    ro.DataToSend[8] = (unsigned char)(crc >> 8);
 
 }
 
