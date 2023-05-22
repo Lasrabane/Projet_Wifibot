@@ -23,10 +23,10 @@ private:
 private slots:
     //Modifier les noms
     void on_disconnect_button_clicked();
-    void on_pushButton_5_clicked();
-    void on_pushButton_pressed();
     void on_connectButton_clicked();
     void on_avancerButton_pressed();
     void on_reculerButton_pressed();
+    void on_gaucheButton_pressed();
+    void on_droiteButton_pressed();
 };
 #endif // MAINWINDOW_H
