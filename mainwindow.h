@@ -19,6 +19,7 @@ public:
 private:
     Ui::MainWindow *ui;
     MyRobot ro;
+    void Camera();
 
 private slots:
     //Modifier les noms

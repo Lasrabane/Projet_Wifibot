@@ -126,12 +126,7 @@ void MainWindow::on_droiteButton_pressed()
 
 
 
-
-
-
-
-
-/*void MainWindow::Camera(){
+void MainWindow::Camera(){
     this->webEngine->load(QUrl("http://192.168.1.106:8080/?action=stream"));
     this->ui->horizontalLayout->insertWidget(0, this->webEngine);
-}*/
+}
