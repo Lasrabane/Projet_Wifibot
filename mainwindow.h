@@ -21,7 +21,14 @@ private:
     MyRobot ro;
     void Camera();
     //onKeyPressEvent();
+    void avancer();
+    void reculer();
+    void droite();
+    void gauche();
     void stop();
+    void keyPressEvent( QKeyEvent * event );
+    void keyReleaseEvent( QKeyEvent * event );
+
 
 private slots:
     //Modifier les noms
@@ -35,5 +42,12 @@ private slots:
     void on_droiteButton_released();
     void on_gaucheButton_released();
     void on_reculerButton_released();
+
+
+
+    void on_cameraBas_clicked();
+    void on_cameraGauche_clicked();
+    void on_cameraHaut_clicked();
+    void on_cameraDroite_clicked();
 };
 #endif // MAINWINDOW_H
