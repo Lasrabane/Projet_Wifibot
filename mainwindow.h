@@ -21,8 +21,14 @@ private:
     MyRobot ro;
     void Camera();
     //onKeyPressEvent();
+    void avancer();
+    void reculer();
+    void droite();
+    void gauche();
     void stop();
     void keyPressEvent( QKeyEvent * event );
+    void keyReleaseEvent( QKeyEvent * event );
+
 
 private slots:
     //Modifier les noms
