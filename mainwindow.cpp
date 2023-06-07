@@ -3,16 +3,23 @@
 #include "myrobot.h"
 #include <QWebEngineView>
 #include <QKeyEvent>
+#include <QBoxLayout>
+//#include <QWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QWebEngineView *webEngine = new QWebEngineView();
+
+    QWebEngineView *webEngineV = new QWebEngineView();
+    webEngineV->resize(300, 300);
+
     QUrl url = QUrl("http://192.168.1.106:8080/?action=stream");
-    webEngine->load(url);
-    webEngine->show();
+    webEngineV->load(url);
+
+    webEngineV->setParent(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -98,7 +105,7 @@ void MainWindow::on_gaucheButton_pressed()
 
 void MainWindow::on_reculerButton_pressed()
 {
-    qDebug() << "recule____";
+    //qDebug() << "recule____";
     // read the data from the socket
     ro.DataToSend[0] = 0xFF;
     ro.DataToSend[1] = 0x07;
@@ -114,8 +121,7 @@ void MainWindow::on_reculerButton_pressed()
 
 void MainWindow::on_droiteButton_pressed()
 {
-    qDebug() << "droite____";
-
+    //qDebug() << "droite____";
     // read the data from the socket
     ro.DataToSend[0] = 0xFF;
     ro.DataToSend[1] = 0x07;
@@ -127,13 +133,11 @@ void MainWindow::on_droiteButton_pressed()
     unsigned short crc = Crc16((unsigned char*)(ro.DataToSend.constData()), 7);
     ro.DataToSend[7] = (unsigned char)crc;
     ro.DataToSend[8] = (unsigned char)(crc >> 8);
-
 }
 
 
-
-
 /*void MainWindow::Camera(){
+    QWebEngineView *webEngine = new QWebEngineView();
     this->webEngine->load(QUrl("http://192.168.1.106:8080/?action=stream"));
     this->ui->horizontalLayout->insertWidget(0, this->webEngine);
 }*/
@@ -147,6 +151,7 @@ void MainWindow::stop() {
     ro.DataToSend[7] = (unsigned char)crc;
     ro.DataToSend[8] = (unsigned char)(crc >> 8);
 }
+
 void MainWindow::on_avancerButton_released()
 {
     stop();
@@ -168,5 +173,14 @@ void MainWindow::on_gaucheButton_released()
 void MainWindow::on_reculerButton_released()
 {
     stop();
+}
+
+
+void MainWindow::Camera()
+{
+    QWebEngineView *webEngineV = new QWebEngineView();
+    QUrl url = QUrl("http://192.168.1.106:8080/?action=stream");
+    webEngineV->load(url);
+    webEngineV->setParent(this);
 }
 

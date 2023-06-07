@@ -35,5 +35,7 @@ private slots:
     void on_droiteButton_released();
     void on_gaucheButton_released();
     void on_reculerButton_released();
+
+
 };
 #endif // MAINWINDOW_H
