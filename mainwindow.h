@@ -22,6 +22,7 @@ private:
     void Camera();
     //onKeyPressEvent();
     void stop();
+    void keyPressEvent( QKeyEvent * event );
 
 private slots:
     //Modifier les noms
@@ -37,5 +38,10 @@ private slots:
     void on_reculerButton_released();
 
 
+
+    void on_cameraBas_clicked();
+    void on_cameraGauche_clicked();
+    void on_cameraHaut_clicked();
+    void on_cameraDroite_clicked();
 };
 #endif // MAINWINDOW_H
