@@ -3,6 +3,13 @@
 #include "myrobot.h"
 
 #include <QMainWindow>
+#include <QWebEngineView>
+#include <QKeyEvent>
+#include <QBoxLayout>
+#include <QNetworkRequest>
+#include <QNetworkAccessManager>
+
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +33,9 @@ private:
     void stop();
     void keyPressEvent( QKeyEvent * event );
     void keyReleaseEvent( QKeyEvent * event );
+    void captor_recup();
+    QTimer *CaptorTimer;
+
 
 
 private slots:
@@ -45,5 +55,6 @@ private slots:
     void on_cameraGauche_clicked();
     void on_cameraHaut_clicked();
     void on_cameraDroite_clicked();
+    void on_capteur_clicked();
 };
 #endif // MAINWINDOW_H

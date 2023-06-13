@@ -17,6 +17,8 @@ public:
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
+    //QTimer* getTimer();
+
 
 signals:
     void updateUI(const QByteArray Data);
