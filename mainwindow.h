@@ -19,8 +19,6 @@ public:
 private:
     Ui::MainWindow *ui;
     MyRobot ro;
-    void Camera();
-    //onKeyPressEvent();
     void avancer();
     void reculer();
     void droite();
@@ -42,8 +40,6 @@ private slots:
     void on_droiteButton_released();
     void on_gaucheButton_released();
     void on_reculerButton_released();
-
-
 
     void on_cameraBas_clicked();
     void on_cameraGauche_clicked();

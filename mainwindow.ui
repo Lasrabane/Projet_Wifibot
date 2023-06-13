@@ -95,8 +95,8 @@
    <widget class="QPushButton" name="cameraGauche">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>230</y>
+      <x>110</x>
+      <y>340</y>
       <width>31</width>
       <height>32</height>
      </rect>
@@ -108,8 +108,8 @@
    <widget class="QPushButton" name="cameraDroite">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>230</y>
+      <x>170</x>
+      <y>340</y>
       <width>31</width>
       <height>32</height>
      </rect>
@@ -121,8 +121,8 @@
    <widget class="QPushButton" name="cameraHaut">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>210</y>
+      <x>140</x>
+      <y>320</y>
       <width>31</width>
       <height>32</height>
      </rect>
@@ -134,14 +134,40 @@
    <widget class="QPushButton" name="cameraBas">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>250</y>
+      <x>140</x>
+      <y>360</y>
       <width>31</width>
       <height>32</height>
      </rect>
     </property>
     <property name="text">
      <string>v</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>300</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Déplacements du robot </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>300</y>
+      <width>181</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Déplacements de la caméra</string>
     </property>
    </widget>
   </widget>
