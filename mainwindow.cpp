@@ -284,50 +284,66 @@ void MainWindow::keyReleaseEvent( QKeyEvent * event )
 void MainWindow::captors_data(const QByteArray Data) {
     qDebug() << "update ";
 
-    int roueDroite = (int)ro.DataReceived[0]; // Vitesse roue droite
-    if(roueDroite < 0) roueDroite = -roueDroite; //roueDroite += 256;
-
-    int roueGauche = (int)ro.DataReceived[9]; // Vitesse roue gauche
-    if(roueGauche < 0) roueGauche = -roueGauche; //roueGauche += 256;
-
     unsigned char batterie_level = (unsigned char)ro.DataReceived[2]; // Niveau de batterie
     QVariant(batterie_level).toFloat();
     batterie_level = batterie_level/10;
+
+    int SpeedRight=(int)(ro.DataReceived[10] << 8) + ro.DataReceived[9]; // Vitesse roue droite
+    if(SpeedRight > 32767) SpeedRight = SpeedRight - 65536;
+    if(SpeedRight < 0) {
+        SpeedRight += 256;
+        SpeedRight = - SpeedRight;
+    }
+    SpeedRight = QVariant(SpeedRight).toFloat();
+    SpeedRight= SpeedRight * 1000 / (50);
+    SpeedRight = SpeedRight * 0.0196;
+
+
+    int SpeedLeft=(int)((ro.DataReceived[1] << 8) + ro.DataReceived[0]); // Vitesse roue gauche
+    if(SpeedLeft > 32767) SpeedLeft = SpeedLeft - 65536;
+    if(SpeedLeft < 0) {
+        SpeedLeft += 256;
+        SpeedLeft = - SpeedLeft;
+    }
+    SpeedLeft = QVariant(SpeedLeft).toFloat();
+    SpeedLeft= SpeedLeft * 1000 / (50);
+    SpeedLeft = SpeedLeft * 0.0196;
+
 
     unsigned char IR_droit_avant = (unsigned char)ro.DataReceived[3]; // Infrarouge droit avant
     QVariant(IR_droit_avant).toFloat();
     IR_droit_avant = IR_droit_avant / 10;
 
     unsigned char IR_gauche_avant = (unsigned char)ro.DataReceived[4]; // Infrarouge gauche avant
-    QVariant(IR_gauche_avant).toFloat();
-    IR_gauche_avant = IR_gauche_avant / 10;
+    //QVariant(IR_gauche_avant).toFloat();
+    //IR_gauche_avant = IR_gauche_avant / 10;
 
 
     unsigned char IR_droit_arriere = (unsigned char)ro.DataReceived[11]; // Infrarouge droit arrière
-    QVariant(IR_droit_arriere).toFloat();
-    IR_droit_arriere = IR_droit_arriere / 10;
+    //QVariant(IR_droit_arriere).toFloat();
+    //IR_droit_arriere = IR_droit_arriere / 10;
 
 
     unsigned char IR_gauche_arriere = (unsigned char)ro.DataReceived[12]; // Infrarouge gauche arrière
-    QVariant(IR_gauche_arriere).toFloat();
-    IR_gauche_arriere = IR_gauche_arriere / 10;
+    //QVariant(IR_gauche_arriere).toFloat();
+    //IR_gauche_arriere = IR_gauche_arriere / 10;
 
 
-    float odometrieX = (float)ro.DataReceived[5]; // Odométrie X
-    float odometrieY = (float)ro.DataReceived[13]; // Odométrie Y
+    float odometrieL = ((long)ro.DataReceived[8] << 24) + ((long)ro.DataReceived[7] << 16) + ((long)ro.DataReceived[6] << 8) + ((long)ro.DataReceived[5]); // Odométrie X
+    odometrieL = odometrieL / 2248;
+    float odometrieR = ((long)ro.DataReceived[16] << 24) + ((long)ro.DataReceived[15] << 16) + ((long)ro.DataReceived[14] << 8) + ((long)ro.DataReceived[13]); // Odométrie Y
+    odometrieR = odometrieR / 2248;
 
     // Affichage des infos dans la fenêtre en les convertissant dans le bon type
 
-    ui->roue_droite->setText(QString::number(roueDroite)); // Vitesse roue droite
-
-
-    ui->roue_gauche->setText(QString::number(roueGauche)); // Vitesse roue gauche
+    ui->roue_droite->setText(QString::number(SpeedRight)); // Vitesse roue droite
+    ui->roue_gauche->setText(QString::number(SpeedLeft)); // Vitesse roue gauche
     ui->batterie_level_text->setText(QVariant(batterie_level).toString()); // Niveau de batterie
     ui->IR_droit_avant->setText(QVariant(IR_droit_avant).toString()); // Infrarouge avant droit
     ui->IR_gauche_avant->setText(QVariant(IR_gauche_avant).toString()); // Infrarouge avant gauche
     ui->IR_droit_arriere->setText(QVariant(IR_droit_arriere).toString()); // Infrarouge arrière droit
     ui->IR_gauche_arriere->setText(QVariant(IR_gauche_arriere).toString()); // Infrarouge arrière gauche
-    ui->odometrieX->setText(QVariant(odometrieX).toString()); // Odométrie en X
-    ui->odometrieY->setText(QVariant(odometrieY).toString()); // Odométrie en Y
+    ui->odometrieX->setText(QVariant(odometrieL).toString()); // Odométrie en X
+    ui->odometrieY->setText(QVariant(odometrieR).toString()); // Odométrie en Y
 }
 
