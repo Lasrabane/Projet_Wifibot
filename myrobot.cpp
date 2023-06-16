@@ -17,10 +17,6 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     // setup signal and slot
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
 }
-/*
-QTimer* MyRobot::getTimer() {
-    return TimerEnvoi;
-}*/
 
 
 void MyRobot::doConnect() {
@@ -68,6 +64,6 @@ void MyRobot::MyTimerSlot() {
     qDebug() << "Timer...";
     while(Mutex.tryLock());
     socket->write(DataToSend);
-    qDebug() << (int)DataToSend[7] << (int)DataToSend[8] ;
+    //qDebug() << (int)DataToSend[7] << (int)DataToSend[8] ;
     Mutex.unlock();
 }

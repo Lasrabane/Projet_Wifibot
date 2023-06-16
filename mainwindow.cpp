@@ -19,11 +19,14 @@ MainWindow::MainWindow(QWidget *parent)
     // Ajout de la caméra dans la fenêtre
     webEngineV->setParent(this);
 
-    CaptorTimer = new QTimer();
-    connect(CaptorTimer, SIGNAL(timeout()), this, SLOT(captor_recup()));
-    CaptorTimer->start(1000);
-
+    connect(&ro, SIGNAL(updateUI(QByteArray)), this, SLOT(captors_data(QByteArray)));
 }
+
+
+/****
+ * NOTE :
+ * ro représente une objet de type robot, créé dans le mainwindow.h
+****/
 
 // Destructeur
 MainWindow::~MainWindow()
@@ -34,19 +37,19 @@ MainWindow::~MainWindow()
 // Bouton Connect
 void MainWindow::on_connectButton_clicked()
 {
-    // Appel de la méthode doConnect() de la classe myrobot
+    // Appel de la méthode doConnect() de la classe myrobot, permettant de connecter le robot
     ro.doConnect();
 }
 
 // Bouton Disconnect
 void MainWindow::on_disconnect_button_clicked()
 {
-    // Appel de la méthode disConnect() de la classe myrobot
+    // Appel de la méthode disConnect() de la classe myrobot, permettant de déconnecter le robot
     ro.disConnect();
 }
 
 
-//Fonction calculant le CRC
+// Fonction calculant le CRC
 unsigned short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max)
 {
     unsigned int Crc = 0xFFFF;
@@ -71,7 +74,7 @@ unsigned short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max)
     return Crc;
 }
 
-
+// Permet d'éviter un bug lors du passage des valeurs au robot
 unsigned  short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max);
 
 void MainWindow::avancer()
@@ -199,7 +202,7 @@ void MainWindow::on_reculerButton_released()
 // Déplacement de la caméra vers la gauche
 void MainWindow::on_cameraGauche_clicked()
 {
-    //
+    // Objet permettant de se connecter à la caméra en envoyant et récupérant des données réseau
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     // Récupération de l'URL permettant à la caméra de se déplacer
     manager->get(QNetworkRequest(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=200")));
@@ -251,8 +254,8 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
         // Appel de la fonction reculer() lors de l'appui sur la key S
         reculer();
     }
-
 }
+
 void MainWindow::keyReleaseEvent( QKeyEvent * event )
 {
     if (event->key() == Qt::Key_Q )
@@ -278,35 +281,53 @@ void MainWindow::keyReleaseEvent( QKeyEvent * event )
 }
 
 // Récupération des infos des capteurs auprès du tableau DataReceived[] du robot
-void MainWindow::captor_recup() {
+void MainWindow::captors_data(const QByteArray Data) {
+    qDebug() << "update ";
 
     int roueDroite = (int)ro.DataReceived[0]; // Vitesse roue droite
+    if(roueDroite < 0) roueDroite = -roueDroite; //roueDroite += 256;
+
     int roueGauche = (int)ro.DataReceived[9]; // Vitesse roue gauche
+    if(roueGauche < 0) roueGauche = -roueGauche; //roueGauche += 256;
+
     unsigned char batterie_level = (unsigned char)ro.DataReceived[2]; // Niveau de batterie
-    unsigned char IR1 = (unsigned char)ro.DataReceived[3]; // Infrarouge droit
-    unsigned char IR2 = (unsigned char)ro.DataReceived[4]; // Infrarouge gauche
-    float odometrie = (float)ro.DataReceived[5]; // Odométrie
+    QVariant(batterie_level).toFloat();
+    batterie_level = batterie_level/10;
+
+    unsigned char IR_droit_avant = (unsigned char)ro.DataReceived[3]; // Infrarouge droit avant
+    QVariant(IR_droit_avant).toFloat();
+    IR_droit_avant = IR_droit_avant / 10;
+
+    unsigned char IR_gauche_avant = (unsigned char)ro.DataReceived[4]; // Infrarouge gauche avant
+    QVariant(IR_gauche_avant).toFloat();
+    IR_gauche_avant = IR_gauche_avant / 10;
+
+
+    unsigned char IR_droit_arriere = (unsigned char)ro.DataReceived[11]; // Infrarouge droit arrière
+    QVariant(IR_droit_arriere).toFloat();
+    IR_droit_arriere = IR_droit_arriere / 10;
+
+
+    unsigned char IR_gauche_arriere = (unsigned char)ro.DataReceived[12]; // Infrarouge gauche arrière
+    QVariant(IR_gauche_arriere).toFloat();
+    IR_gauche_arriere = IR_gauche_arriere / 10;
+
+
+    float odometrieX = (float)ro.DataReceived[5]; // Odométrie X
+    float odometrieY = (float)ro.DataReceived[13]; // Odométrie Y
 
     // Affichage des infos dans la fenêtre en les convertissant dans le bon type
+
     ui->roue_droite->setText(QString::number(roueDroite)); // Vitesse roue droite
+
+
     ui->roue_gauche->setText(QString::number(roueGauche)); // Vitesse roue gauche
     ui->batterie_level_text->setText(QVariant(batterie_level).toString()); // Niveau de batterie
-    ui->IR_droit->setText(QVariant(IR1).toString()); // Infrarouge avant droit
-    ui->IR_gauche->setText(QVariant(IR2).toString());// Infrarouge avant gauche
-    ui->odometrie->setText(QVariant(odometrie).toString());
-
-    //11 12 pour les IR arrières
+    ui->IR_droit_avant->setText(QVariant(IR_droit_avant).toString()); // Infrarouge avant droit
+    ui->IR_gauche_avant->setText(QVariant(IR_gauche_avant).toString()); // Infrarouge avant gauche
+    ui->IR_droit_arriere->setText(QVariant(IR_droit_arriere).toString()); // Infrarouge arrière droit
+    ui->IR_gauche_arriere->setText(QVariant(IR_gauche_arriere).toString()); // Infrarouge arrière gauche
+    ui->odometrieX->setText(QVariant(odometrieX).toString()); // Odométrie en X
+    ui->odometrieY->setText(QVariant(odometrieY).toString()); // Odométrie en Y
 }
-
-/*void MainWindow::update_captors_data()
-{
-
-}*/
-
-void MainWindow::on_capteur_clicked()
-{
-    captor_recup();
-}
-
-
 

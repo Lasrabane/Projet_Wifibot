@@ -25,21 +25,19 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    MyRobot ro;
-    void avancer();
-    void reculer();
-    void droite();
-    void gauche();
-    void stop();
+    MyRobot ro; // Création de l'objet de type robot
+    void avancer(); // Fonction faisant avancer le robot
+    void reculer(); // Fonction faisant reculer le robot
+    void droite(); // Fonction faisant tourner le robot à droite
+    void gauche(); // Fonction faisant tourner le robot à gauche
+    void stop(); // Fonction arrêtant le robot
+
+    // Évènements attachés aux touches du clavier
     void keyPressEvent( QKeyEvent * event );
     void keyReleaseEvent( QKeyEvent * event );
-    void captor_recup();
-    QTimer *CaptorTimer;
-
-
 
 private slots:
-    //Modifier les noms
+    // Attache les boutons de l'interface aux fonctions
     void on_disconnect_button_clicked();
     void on_connectButton_clicked();
     void on_avancerButton_pressed();
@@ -55,6 +53,8 @@ private slots:
     void on_cameraGauche_clicked();
     void on_cameraHaut_clicked();
     void on_cameraDroite_clicked();
-    void on_capteur_clicked();
-};
+
+    // Récupère les valeurs des capteurs
+    void captors_data(const QByteArray Data);
+    };
 #endif // MAINWINDOW_H
